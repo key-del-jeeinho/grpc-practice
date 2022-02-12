@@ -6,7 +6,7 @@ import com.velocia.lib.HelloGrpc;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class GrpcClientHelloService implements HelloService{
     @GrpcClient("GLOBAL")
     private HelloGrpc.HelloBlockingStub helloStub;
