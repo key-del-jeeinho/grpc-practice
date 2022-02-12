@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.google.protobuf' version '0.8.14'
 }
 
 group 'org.velocia'
@@ -10,8 +11,35 @@ repositories {
 }
 
 dependencies {
+    implementation "io.grpc:grpc-protobuf:1.35.0"
+    implementation "io.grpc:grpc-stub:1.35.0"
+    compileOnly 'jakarta.annotation:jakarta.annotation-api:1.3.5'
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+String protoVersion = '3.14.0'
+String protoPluginVersion = '1.35.0'
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protoVersion}"
+    }
+    generatedFilesBaseDir = "$projectDir/src/generated"
+    clean {
+        delete generatedFilesBaseDir
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${protoPluginVersion}"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
 }
 
 test {
